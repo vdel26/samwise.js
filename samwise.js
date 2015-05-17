@@ -149,6 +149,16 @@ var samwise = (function () {
     _inherits(ContentView, _View3);
 
     _createClass(ContentView, [{
+      key: 'createLink',
+      value: function createLink(name, url) {
+        var listEl = create('li');
+        var ref = create('a');
+        a.href = url;
+        a.textContent = name;
+        listEl.appendChild(ref);
+        return listEl;
+      }
+    }, {
       key: 'render',
       value: function render() {
         var main = create('div', ['sw-main']);
@@ -156,6 +166,7 @@ var samwise = (function () {
         var mainContent = create('div', ['sw-content']);
         var leftCol = create('ul', ['sw-column', 'sw-column--left']);
         var rightCol = create('ul', ['sw-column', 'sw-column--left']);
+
         mainContent.appendChild(leftCol);
         mainContent.appendChild(rightCol);
         main.appendChild(mainContent);
@@ -171,18 +182,32 @@ var samwise = (function () {
    * Link to a document
    */
 
-  var LinkView = (function () {
-    function LinkView() {
-      _classCallCheck(this, LinkView);
+  var ListElemView = (function (_View4) {
+    function ListElemView(options) {
+      _classCallCheck(this, ListElemView);
+
+      _get(Object.getPrototypeOf(ListElemView.prototype), 'constructor', this).call(this);
+      this.url = options.url;
+      this.name = options.name;
+      this.render();
     }
 
-    _createClass(LinkView, [{
+    _inherits(ListElemView, _View4);
+
+    _createClass(ListElemView, [{
       key: 'render',
-      value: function render() {}
+      value: function render() {
+        var li = create('li', ['sw-listElem']);
+        var a = create('a');
+        a.href = this.url;
+        a.textContent = this.name;
+        li.appendChild(a);
+        this.view = li;
+      }
     }]);
 
-    return LinkView;
-  })();
+    return ListElemView;
+  })(View);
 
   /**
    * DOM structure
@@ -214,7 +239,7 @@ var samwise = (function () {
    *
    * @param {Object} params
    *   - el: selector of the element that triggers the widget
-   *   - url: endpoint to extract the data
+   *   - url: endpoint to fetch the data
    *   - data: required if thre is no 'url'
    *   - section: only necessary if 'url' is present. Is
    */
