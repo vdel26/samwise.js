@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Example page</title>
+  <link rel="stylesheet" type="text/css" href="../samwise.css">
+  <style>
+    body {
+      background-color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Example page</h1>
+<button id="docs">?</button>
+
+<script src="../samwise.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var data = {
+      sections: [
+        {
+          title: 'nginx',
+          articles: [
+            { name: '', url: ''},
+            { name: '', url: ''},
+            { name: '', url: ''}
+          ]
+        },
+        {
+          title: 'developer portal',
+          articles: [
+            { name: '', url: ''},
+            { name: '', url: ''},
+            { name: '', url: ''}
+          ]
+        }
+      ]
+    };
+
+    // you can pass either a 'url' and 'section'
+    // or 'data'
+    samwise({
+      elem: '#docs',
+      data: data
+    });
+  });
+</script>
+
+</body>
+</html>
