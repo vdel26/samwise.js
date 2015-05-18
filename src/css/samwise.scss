@@ -3,6 +3,8 @@ $blue: rgba(8,124,202,0.9);
 
 .sw-outerContainer {
   position: fixed;
+  display: none;
+  opacity: 0;
   left: 0;
   right: 0;
   top: 0;
@@ -11,6 +13,11 @@ $blue: rgba(8,124,202,0.9);
   z-index: 1000;
   overflow: auto;
   background-color: $blue;
+
+  &.is-visible {
+    display: block;
+    opacity: 1;
+  }
 }
 
 .sw {

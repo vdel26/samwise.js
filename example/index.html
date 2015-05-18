@@ -22,6 +22,7 @@
       sections: [
         {
           title: 'API gateway',
+          section: 'api_gateway',
           articles: [
             { name: 'Nginx gateway',                url: 'https://support.3scale.net/howtos/api-configuration#nginx'},
             { name: 'Nginx on-premise setup',       url: 'https://support.3scale.net/howtos/api-configuration#nginxOnPremiseSetup'},
@@ -30,6 +31,7 @@
         },
         {
           title: 'Developer portal',
+          section: 'dev_portal',
           articles: [
             { name: 'Change CSS',                   url: 'https://support.3scale.net/howtos/portal-configuration#change-css'},
             { name: 'CMS Guide',                    url: 'https://support.3scale.net/howtos/portal-configuration#cms-guide'},
@@ -43,7 +45,8 @@
     // or 'data'
     samwise({
       elem: '#docs',
-      data: data
+      data: data,
+      section: 'dev_portal'
     });
   });
 </script>

@@ -9,6 +9,12 @@ const samwise = (() => {
   const defaults = {};
 
   /**
+   * Params
+   */
+
+  const params = new Map();
+
+  /**
    * Helper functions
    */
 
@@ -19,7 +25,7 @@ const samwise = (() => {
     return el;
   };
   const createFragment = () => document.createDocumentFragment();
-  const bindEvent = (type, elem, cb) => elem.addEventListener(type, cb);
+  const hasProp = (prop, obj) => Object.prototype.hasOwnProperty.call(obj, prop);
 
   /**
    * Base view class
@@ -35,9 +41,13 @@ const samwise = (() => {
     }
 
     set view(elem) {
-      let frag = createFragment();
-      frag.appendChild(elem);
-      this._view = frag;
+      // let frag = createFragment();
+      // frag.appendChild(elem);
+      this._view = elem;
+    }
+
+    addSubview(subview) {
+      this._view.appendChild(subview);
     }
   }
 
@@ -162,9 +172,42 @@ const samwise = (() => {
    * </div>
    */
 
-  const mountApp = () => {
-    const bg = new BgView();
-    document.body.appendChild(bg.view);
+
+  const getSection = (arr, section) => {
+    arr.sections.filter((sec) => sec.section === section)[0];
+  }
+
+  const toggleVisibility = (elem) => {
+    elem.classList.toggle('is-visible');
+  }
+
+  const bindEvents = (triggerEl, root) => {
+    triggerEl.addEventListener('click', toggleVisibility.bind(null, root));
+    // other events:
+    //    - dismiss with keyboard esc
+    //    - dismiss with click on sw-closeButton
+  }
+
+  const initApp = (triggerEl, params) => {
+    const mode = (() => {
+      if (hasProp('url', params))
+        return 'url';
+      else if (hasProp('data', params) && hasProp('section', params))
+        return 'data';
+      throw new Error("Missing param: you have to supply either 'url' or 'data' and 'section'");
+    })();
+
+    const data = (() => {
+      if (mode === 'data')
+        return getSection(params.data, params.section);
+      else console.log('No URL mode yet');
+    })();
+
+    // insert the whole widget HTML tree to the DOM
+    let bg = new BgView();
+    const root = document.body.appendChild(bg.view);
+
+    bindEvents(triggerEl, root);
   }
 
   /**
@@ -179,8 +222,8 @@ const samwise = (() => {
 
   return (params) => {
     console.log(params);
-    const button = document.querySelector(params.elem);
-    button.addEventListener('click', mountApp);
+    let button = document.querySelector(params.elem);
+    initApp(button, params);
   };
 
 })();

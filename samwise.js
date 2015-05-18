@@ -19,6 +19,12 @@ var samwise = (function () {
   var defaults = {};
 
   /**
+   * Params
+   */
+
+  var params = new Map();
+
+  /**
    * Helper functions
    */
 
@@ -43,8 +49,8 @@ var samwise = (function () {
   var createFragment = function createFragment() {
     return document.createDocumentFragment();
   };
-  var bindEvent = function bindEvent(type, elem, cb) {
-    return elem.addEventListener(type, cb);
+  var hasProp = function hasProp(prop, obj) {
+    return Object.prototype.hasOwnProperty.call(obj, prop);
   };
 
   /**
@@ -64,9 +70,14 @@ var samwise = (function () {
         return this._view;
       },
       set: function (elem) {
-        var frag = createFragment();
-        frag.appendChild(elem);
-        this._view = frag;
+        // let frag = createFragment();
+        // frag.appendChild(elem);
+        this._view = elem;
+      }
+    }, {
+      key: 'addSubview',
+      value: function addSubview(subview) {
+        this._view.appendChild(subview);
       }
     }]);
 
@@ -229,9 +240,38 @@ var samwise = (function () {
    * </div>
    */
 
-  var mountApp = function mountApp() {
+  var getSection = function getSection(arr, section) {
+    arr.sections.filter(function (sec) {
+      return sec.section === section;
+    })[0];
+  };
+
+  var toggleVisibility = function toggleVisibility(elem) {
+    elem.classList.toggle('is-visible');
+  };
+
+  var bindEvents = function bindEvents(triggerEl, root) {
+    triggerEl.addEventListener('click', toggleVisibility.bind(null, root));
+    // other events:
+    //    - dismiss with keyboard esc
+    //    - dismiss with click on sw-closeButton
+  };
+
+  var initApp = function initApp(triggerEl, params) {
+    var mode = (function () {
+      if (hasProp('url', params)) return 'url';else if (hasProp('data', params) && hasProp('section', params)) return 'data';
+      throw new Error('Missing param: you have to supply either \'url\' or \'data\' and \'section\'');
+    })();
+
+    var data = (function () {
+      if (mode === 'data') return getSection(params.data, params.section);else console.log('No URL mode yet');
+    })();
+
+    // insert the whole widget HTML tree to the DOM
     var bg = new BgView();
-    document.body.appendChild(bg.view);
+    var root = document.body.appendChild(bg.view);
+
+    bindEvents(triggerEl, root);
   };
 
   /**
@@ -247,6 +287,6 @@ var samwise = (function () {
   return function (params) {
     console.log(params);
     var button = document.querySelector(params.elem);
-    button.addEventListener('click', mountApp);
+    initApp(button, params);
   };
 })();
