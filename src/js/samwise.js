@@ -6,13 +6,7 @@ const samwise = (() => {
    * Defaults
    */
 
-  const defaults = {};
-
-  /**
-   * Params
-   */
-
-  const params = new Map();
+  const defaults = new Map();
 
   /**
    * Helper functions
@@ -26,7 +20,7 @@ const samwise = (() => {
   };
   const createFragment = () => document.createDocumentFragment();
   const hasProp = (prop, obj) => Object.prototype.hasOwnProperty.call(obj, prop);
-  const createEvent = ((type) => {
+  const createEvent = (() => {
     if (typeof window.Event === 'function') {
       return (type) => new Event(type);
     }
@@ -118,10 +112,10 @@ const samwise = (() => {
 
     createLink(name, url) {
       let listEl = create('li');
-      let ref = create('a');
+      let a = create('a');
       a.href = url;
       a.textContent = name;
-      listEl.appendChild(ref);
+      listEl.appendChild(a);
       return listEl;
     }
 
