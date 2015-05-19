@@ -52,6 +52,19 @@ var samwise = (function () {
   var hasProp = function hasProp(prop, obj) {
     return Object.prototype.hasOwnProperty.call(obj, prop);
   };
+  var createEvent = (function (type) {
+    if (typeof window.Event === 'function') {
+      return function (type) {
+        return new Event(type);
+      };
+    } else {
+      // IE8/9 support
+      return function (type) {
+        var ev = document.createEvent('Event');
+        ev.initEvent(type, true, true);
+      };
+    }
+  })();
 
   /**
    * Base view class
@@ -88,17 +101,17 @@ var samwise = (function () {
    * Full screen background
    */
 
-  var BgView = (function (_View) {
-    function BgView() {
-      _classCallCheck(this, BgView);
+  var OuterView = (function (_View) {
+    function OuterView(options) {
+      _classCallCheck(this, OuterView);
 
-      _get(Object.getPrototypeOf(BgView.prototype), 'constructor', this).call(this);
+      _get(Object.getPrototypeOf(OuterView.prototype), 'constructor', this).call(this);
       this.render();
     }
 
-    _inherits(BgView, _View);
+    _inherits(OuterView, _View);
 
-    _createClass(BgView, [{
+    _createClass(OuterView, [{
       key: 'render',
       value: function render() {
         var outerContainer = create('div', ['sw-outerContainer']);
@@ -108,7 +121,7 @@ var samwise = (function () {
       }
     }]);
 
-    return BgView;
+    return OuterView;
   })(View);
 
   /**
@@ -241,7 +254,7 @@ var samwise = (function () {
    */
 
   var getSection = function getSection(arr, section) {
-    arr.sections.filter(function (sec) {
+    return arr.sections.filter(function (sec) {
       return sec.section === section;
     })[0];
   };
@@ -252,9 +265,12 @@ var samwise = (function () {
 
   var bindEvents = function bindEvents(triggerEl, root) {
     triggerEl.addEventListener('click', toggleVisibility.bind(null, root));
-    // other events:
-    //    - dismiss with keyboard esc
-    //    - dismiss with click on sw-closeButton
+    root.addEventListener('click', function (evt) {
+      if (evt.target === root) toggleVisibility(root);
+    });
+    document.addEventListener('keyup', function (evt) {
+      if (root.classList.contains('is-visible') && evt.keyCode === 27) toggleVisibility(root);
+    });
   };
 
   var initApp = function initApp(triggerEl, params) {
@@ -268,7 +284,7 @@ var samwise = (function () {
     })();
 
     // insert the whole widget HTML tree to the DOM
-    var bg = new BgView();
+    var bg = new OuterView();
     var root = document.body.appendChild(bg.view);
 
     bindEvents(triggerEl, root);

@@ -26,6 +26,18 @@ const samwise = (() => {
   };
   const createFragment = () => document.createDocumentFragment();
   const hasProp = (prop, obj) => Object.prototype.hasOwnProperty.call(obj, prop);
+  const createEvent = ((type) => {
+    if (typeof window.Event === 'function') {
+      return (type) => new Event(type);
+    }
+    else {
+      // IE8/9 support
+      return (type) => {
+        let ev = document.createEvent('Event');
+        ev.initEvent(type, true, true);
+      }
+    }
+  })();
 
   /**
    * Base view class
@@ -55,8 +67,8 @@ const samwise = (() => {
    * Full screen background
    */
 
-  class BgView extends View {
-    constructor() {
+  class OuterView extends View {
+    constructor(options) {
       super();
       this.render();
     }
@@ -174,7 +186,7 @@ const samwise = (() => {
 
 
   const getSection = (arr, section) => {
-    arr.sections.filter((sec) => sec.section === section)[0];
+    return arr.sections.filter((sec) => sec.section === section)[0];
   }
 
   const toggleVisibility = (elem) => {
@@ -183,9 +195,13 @@ const samwise = (() => {
 
   const bindEvents = (triggerEl, root) => {
     triggerEl.addEventListener('click', toggleVisibility.bind(null, root));
-    // other events:
-    //    - dismiss with keyboard esc
-    //    - dismiss with click on sw-closeButton
+    root.addEventListener('click', (evt) => {
+      if (evt.target === root) toggleVisibility(root);
+    });
+    document.addEventListener('keyup', (evt) => {
+      if (root.classList.contains('is-visible') && evt.keyCode === 27)
+        toggleVisibility(root);
+    });
   }
 
   const initApp = (triggerEl, params) => {
@@ -204,7 +220,7 @@ const samwise = (() => {
     })();
 
     // insert the whole widget HTML tree to the DOM
-    let bg = new BgView();
+    let bg = new OuterView();
     const root = document.body.appendChild(bg.view);
 
     bindEvents(triggerEl, root);
