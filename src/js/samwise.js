@@ -35,7 +35,7 @@ const samwise = (() => {
       return (type) => {
         let ev = document.createEvent('Event');
         ev.initEvent(type, true, true);
-      }
+      };
     }
   })();
 
@@ -154,7 +154,7 @@ const samwise = (() => {
       this.render();
     }
     render() {
-      let li = create('li', ['sw-listElem'])
+      let li = create('li', ['sw-listElem']);
       let a = create('a');
       a.href = this.url;
       a.textContent = this.name;
@@ -187,11 +187,11 @@ const samwise = (() => {
 
   const getSection = (arr, section) => {
     return arr.sections.filter((sec) => sec.section === section)[0];
-  }
+  };
 
   const toggleVisibility = (elem) => {
     elem.classList.toggle('is-visible');
-  }
+  };
 
   const bindEvents = (triggerEl, root) => {
     triggerEl.addEventListener('click', toggleVisibility.bind(null, root));
@@ -202,7 +202,7 @@ const samwise = (() => {
       if (root.classList.contains('is-visible') && evt.keyCode === 27)
         toggleVisibility(root);
     });
-  }
+  };
 
   const initApp = (triggerEl, params) => {
     const mode = (() => {
@@ -224,7 +224,7 @@ const samwise = (() => {
     const root = document.body.appendChild(bg.view);
 
     bindEvents(triggerEl, root);
-  }
+  };
 
   /**
    * Public interface

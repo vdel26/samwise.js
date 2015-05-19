@@ -3,6 +3,7 @@ var sass = require('gulp-sass');
 var babel = require('gulp-babel');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
+var eslint = require('gulp-eslint');
 
 gulp.task('js', function() {
   return gulp.src('src/js/**/*.js')
@@ -15,6 +16,12 @@ gulp.task('scss', function () {
     .pipe(sass())
     .pipe(gulp.dest('.'))
     .pipe(reload({ stream: true }));
+});
+
+gulp.task('lint', function () {
+  return gulp.src('src/js/**/*.js')
+    .pipe(eslint())
+    .pipe(eslint.format());
 });
 
 gulp.task('serve', ['scss', 'js'], function() {
