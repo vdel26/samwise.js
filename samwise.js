@@ -16,13 +16,13 @@ var samwise = (function () {
    * Defaults
    */
 
-  var defaults = {};
+  var defaults = new Map();
 
   /**
-   * Params
+   * Defaults
    */
 
-  var params = new Map();
+  var store = new Map();
 
   /**
    * Helper functions
@@ -52,7 +52,7 @@ var samwise = (function () {
   var hasProp = function hasProp(prop, obj) {
     return Object.prototype.hasOwnProperty.call(obj, prop);
   };
-  var createEvent = (function (type) {
+  var createEvent = (function () {
     if (typeof window.Event === 'function') {
       return function (type) {
         return new Event(type);
@@ -83,8 +83,6 @@ var samwise = (function () {
         return this._view;
       },
       set: function (elem) {
-        // let frag = createFragment();
-        // frag.appendChild(elem);
         this._view = elem;
       }
     }, {
@@ -144,6 +142,10 @@ var samwise = (function () {
         var frame = create('div', ['sw']);
 
         var header = create('header');
+        var h1 = create('h1');
+        h1.textContent = store.get('section');
+        header.appendChild(h1);
+
         var content = new ContentView();
         var footer = create('footer', ['sw-footer']);
 
@@ -173,14 +175,19 @@ var samwise = (function () {
     _inherits(ContentView, _View3);
 
     _createClass(ContentView, [{
-      key: 'createLink',
-      value: function createLink(name, url) {
-        var listEl = create('li');
-        var ref = create('a');
-        a.href = url;
-        a.textContent = name;
-        listEl.appendChild(ref);
-        return listEl;
+      key: 'createListElems',
+      value: function createListElems(leftCol, rightCol) {
+        var data = store.get('data');
+        var items = data.articles.map(function (item) {
+          return new ListElemView({ url: item.url, name: item.name });
+        }).map(function (item) {
+          return item.view;
+        });
+        var frag = createFragment();
+        items.forEach(function (elem) {
+          return frag.appendChild(elem);
+        });
+        leftCol.appendChild(frag);
       }
     }, {
       key: 'render',
@@ -190,6 +197,8 @@ var samwise = (function () {
         var mainContent = create('div', ['sw-content']);
         var leftCol = create('ul', ['sw-column', 'sw-column--left']);
         var rightCol = create('ul', ['sw-column', 'sw-column--left']);
+
+        this.createListElems(leftCol, rightCol);
 
         mainContent.appendChild(leftCol);
         mainContent.appendChild(rightCol);
@@ -283,9 +292,12 @@ var samwise = (function () {
       if (mode === 'data') return getSection(params.data, params.section);else console.log('No URL mode yet');
     })();
 
+    store.set('data', data);
+    store.set('section', data.title);
+
     // insert the whole widget HTML tree to the DOM
-    var bg = new OuterView();
-    var root = document.body.appendChild(bg.view);
+    var app = new OuterView({ data: data });
+    var root = document.body.appendChild(app.view);
 
     bindEvents(triggerEl, root);
   };

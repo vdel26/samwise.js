@@ -9,6 +9,12 @@ const samwise = (() => {
   const defaults = new Map();
 
   /**
+   * Defaults
+   */
+
+  const store = new Map();
+
+  /**
    * Helper functions
    */
 
@@ -47,8 +53,6 @@ const samwise = (() => {
     }
 
     set view(elem) {
-      // let frag = createFragment();
-      // frag.appendChild(elem);
       this._view = elem;
     }
 
@@ -89,6 +93,10 @@ const samwise = (() => {
       let frame = create('div', ['sw']);
 
       let header = create('header');
+      let h1 = create('h1');
+      h1.textContent = store.get('section');
+      header.appendChild(h1);
+
       let content = new ContentView();
       let footer = create('footer', ['sw-footer']);
 
@@ -110,13 +118,14 @@ const samwise = (() => {
       this.render();
     }
 
-    createLink(name, url) {
-      let listEl = create('li');
-      let a = create('a');
-      a.href = url;
-      a.textContent = name;
-      listEl.appendChild(a);
-      return listEl;
+    createListElems(leftCol, rightCol) {
+      let data = store.get('data');
+      let items = data.articles
+                      .map((item) => new ListElemView({ url: item.url, name: item.name }))
+                      .map((item) => item.view);
+      let frag = createFragment();
+      items.forEach((elem) => frag.appendChild(elem));
+      leftCol.appendChild(frag);
     }
 
     render() {
@@ -126,7 +135,7 @@ const samwise = (() => {
       let leftCol = create('ul', ['sw-column', 'sw-column--left']);
       let rightCol = create('ul', ['sw-column', 'sw-column--left']);
 
-
+      this.createListElems(leftCol, rightCol);
 
       mainContent.appendChild(leftCol);
       mainContent.appendChild(rightCol);
@@ -213,9 +222,12 @@ const samwise = (() => {
       else console.log('No URL mode yet');
     })();
 
+    store.set('data', data);
+    store.set('section', data.title);
+
     // insert the whole widget HTML tree to the DOM
-    let bg = new OuterView();
-    const root = document.body.appendChild(bg.view);
+    let app = new OuterView();
+    const root = document.body.appendChild(app.view);
 
     bindEvents(triggerEl, root);
   };
