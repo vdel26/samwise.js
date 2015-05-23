@@ -9,7 +9,7 @@ const samwise = (() => {
   const defaults = new Map();
 
   /**
-   * Defaults
+   * Datastore
    */
 
   const store = new Map();
@@ -89,16 +89,30 @@ const samwise = (() => {
       this.render();
     }
 
+    createHeader() {
+
+    }
+
+    createFooter() {
+      let links = store.get('footer');
+      let buttons = links.map((item) => new ButtonView({ url: item.url, name: item.name }))
+                         .map((item) => item.view);
+      let frag = createFragment();
+      buttons.forEach((elem) => frag.appendChild(elem));
+      return frag;
+    }
+
     render() {
       let frame = create('div', ['sw']);
 
-      let header = create('header');
+      let header = create('header', ['sw-header']);
       let h1 = create('h1');
       h1.textContent = store.get('section');
       header.appendChild(h1);
 
       let content = new ContentView();
       let footer = create('footer', ['sw-footer']);
+      footer.appendChild(this.createFooter());
 
       frame.appendChild(header);
       frame.appendChild(content.view);
@@ -142,6 +156,25 @@ const samwise = (() => {
       main.appendChild(mainContent);
 
       this.view = main;
+    }
+  }
+
+  /**
+   * Button
+   */
+  class ButtonView extends View {
+    constructor(options) {
+      super();
+      this.url = options.url;
+      this.name = options.name;
+      this.render();
+    }
+
+    render() {
+      let a = create('a', ['sw-button']);
+      a.href = this.url;
+      a.textContent = this.name;
+      this.view = a;
     }
   }
 
@@ -224,6 +257,7 @@ const samwise = (() => {
 
     store.set('data', data);
     store.set('section', data.title);
+    store.set('footer', params.data.footer);
 
     // insert the whole widget HTML tree to the DOM
     let app = new OuterView();

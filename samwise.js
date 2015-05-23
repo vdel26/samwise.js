@@ -19,7 +19,7 @@ var samwise = (function () {
   var defaults = new Map();
 
   /**
-   * Defaults
+   * Datastore
    */
 
   var store = new Map();
@@ -137,17 +137,36 @@ var samwise = (function () {
     _inherits(FrameView, _View2);
 
     _createClass(FrameView, [{
+      key: 'createHeader',
+      value: function createHeader() {}
+    }, {
+      key: 'createFooter',
+      value: function createFooter() {
+        var links = store.get('footer');
+        var buttons = links.map(function (item) {
+          return new ButtonView({ url: item.url, name: item.name });
+        }).map(function (item) {
+          return item.view;
+        });
+        var frag = createFragment();
+        buttons.forEach(function (elem) {
+          return frag.appendChild(elem);
+        });
+        return frag;
+      }
+    }, {
       key: 'render',
       value: function render() {
         var frame = create('div', ['sw']);
 
-        var header = create('header');
+        var header = create('header', ['sw-header']);
         var h1 = create('h1');
         h1.textContent = store.get('section');
         header.appendChild(h1);
 
         var content = new ContentView();
         var footer = create('footer', ['sw-footer']);
+        footer.appendChild(this.createFooter());
 
         frame.appendChild(header);
         frame.appendChild(content.view);
@@ -212,10 +231,39 @@ var samwise = (function () {
   })(View);
 
   /**
+   * Button
+   */
+
+  var ButtonView = (function (_View4) {
+    function ButtonView(options) {
+      _classCallCheck(this, ButtonView);
+
+      _get(Object.getPrototypeOf(ButtonView.prototype), 'constructor', this).call(this);
+      this.url = options.url;
+      this.name = options.name;
+      this.render();
+    }
+
+    _inherits(ButtonView, _View4);
+
+    _createClass(ButtonView, [{
+      key: 'render',
+      value: function render() {
+        var a = create('a', ['sw-button']);
+        a.href = this.url;
+        a.textContent = this.name;
+        this.view = a;
+      }
+    }]);
+
+    return ButtonView;
+  })(View);
+
+  /**
    * Link to a document
    */
 
-  var ListElemView = (function (_View4) {
+  var ListElemView = (function (_View5) {
     function ListElemView(options) {
       _classCallCheck(this, ListElemView);
 
@@ -225,7 +273,7 @@ var samwise = (function () {
       this.render();
     }
 
-    _inherits(ListElemView, _View4);
+    _inherits(ListElemView, _View5);
 
     _createClass(ListElemView, [{
       key: 'render',
@@ -294,9 +342,10 @@ var samwise = (function () {
 
     store.set('data', data);
     store.set('section', data.title);
+    store.set('footer', params.data.footer);
 
     // insert the whole widget HTML tree to the DOM
-    var app = new OuterView({ data: data });
+    var app = new OuterView();
     var root = document.body.appendChild(app.view);
 
     bindEvents(triggerEl, root);

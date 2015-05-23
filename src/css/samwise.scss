@@ -1,30 +1,116 @@
-$white: #fff;
-$blue: rgba(8,124,202,0.9);
+$green:        #39E1CF;
+$white:        #FFF;
+$black:        #333;
+$lighter-grey: #F8FAFB;
+$light-grey:   #DDD;
+$dark-grey:    #626C79;
+$darker-grey:  #323F4D;
+
+$font: 'Helvetica', 'Arial', sans-serif;
 
 .sw-outerContainer {
   position: fixed;
   display: none;
-  opacity: 0;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
   height: 100%;
-  z-index: 1000;
+  z-index: 1000; /* make sure it's above everything else on the page */
   overflow: auto;
-  background-color: $blue;
+  background: rgba($dark-grey, 0);
 
   &.is-visible {
     display: block;
-    opacity: 1;
+    background: rgba($dark-grey, 0.9);
   }
 }
 
 .sw {
   position: relative;
-  width: 750px;
+  width: 600px;
   height: 700px;
-  margin: 0 auto;
-  background: $white;
+  margin: 50px auto 0;
+  background: $lighter-grey;
   border-radius: 3px;
+  font-family: $font;
+}
+
+.sw-header {
+  margin-left: 50px;
+  padding-top: 60px;
+
+  h1 {
+    color: $darker-grey;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.sw-main {
+  margin: 50px 50px 0;
+}
+
+.sw-footer {
+  background-color: $darker-grey;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  line-height: 140px;
+  border-radius: 0 0 3px 3px;
+  text-align: center;
+}
+
+.sw-button {
+  display: inline-block;
+  height: 50px;
+  line-height: 50px;
+  width: 190px;
+  margin: 0 15px;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 300;
+  border: 3px solid $green;
+  border-radius: 3px;
+  font-size: 14px;
+  color: $white;
+  transition: .3s all;
+
+  &:hover {
+    background-color: $green;
+    box-shadow: 0px 8px 16px $black;
+  }
+}
+
+.sw-column {
+  list-style: none;
+  padding: 0;
+}
+
+.sw-listElem {
+  border-top: 1px solid $light-grey;
+  transition: .3s all;
+
+  &:last-child {
+    border-bottom: 1px solid $light-grey;
+  }
+
+  &:hover {
+    background-color: $white;
+    padding-left: 20px;
+  }
+
+  a {
+    display: inline-block;
+    font-weight: 300;
+    font-size: 18px;
+    color: $black;
+    text-decoration: none;
+    line-height: 50px;
+  }
 }
