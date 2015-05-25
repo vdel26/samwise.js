@@ -107,7 +107,9 @@ const samwise = (() => {
 
       let header = create('header', ['sw-header']);
       let h1 = create('h1');
+      let div = create('div', ['sw-closeButton', 'js-close']);
       h1.textContent = store.get('section');
+      header.appendChild(div);
       header.appendChild(h1);
 
       let content = new ContentView();
@@ -231,7 +233,14 @@ const samwise = (() => {
   };
 
   const bindEvents = (triggerEl, root) => {
+    let close = document.querySelector('.js-close');
+
     triggerEl.addEventListener('click', toggleVisibility.bind(null, root));
+
+    close.addEventListener('click', (evt) => toggleVisibility(root));
+    close.addEventListener('mousedown', (evt) => close.classList.add('is-pressed'));
+    close.addEventListener('mouseup', (evt) => close.classList.remove('is-pressed'));
+
     root.addEventListener('click', (evt) => {
       if (evt.target === root) toggleVisibility(root);
     });

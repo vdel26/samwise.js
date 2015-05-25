@@ -161,7 +161,9 @@ var samwise = (function () {
 
         var header = create('header', ['sw-header']);
         var h1 = create('h1');
+        var div = create('div', ['sw-closeButton', 'js-close']);
         h1.textContent = store.get('section');
+        header.appendChild(div);
         header.appendChild(h1);
 
         var content = new ContentView();
@@ -321,7 +323,20 @@ var samwise = (function () {
   };
 
   var bindEvents = function bindEvents(triggerEl, root) {
+    var close = document.querySelector('.js-close');
+
     triggerEl.addEventListener('click', toggleVisibility.bind(null, root));
+
+    close.addEventListener('click', function (evt) {
+      return toggleVisibility(root);
+    });
+    close.addEventListener('mousedown', function (evt) {
+      return close.classList.add('is-pressed');
+    });
+    close.addEventListener('mouseup', function (evt) {
+      return close.classList.remove('is-pressed');
+    });
+
     root.addEventListener('click', function (evt) {
       if (evt.target === root) toggleVisibility(root);
     });
