@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
+var autoprefixer = require('gulp-autoprefixer');
 var babel = require('gulp-babel');
 var browserSync = require('browser-sync');
 var reload = browserSync.reload;
@@ -14,6 +15,7 @@ gulp.task('js', function() {
 gulp.task('scss', function () {
   return gulp.src('src/css/**/*.scss')
     .pipe(sass())
+    .pipe(autoprefixer())
     .pipe(gulp.dest('.'))
     .pipe(reload({ stream: true }));
 });

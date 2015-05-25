@@ -162,6 +162,7 @@ const samwise = (() => {
   /**
    * Button
    */
+
   class ButtonView extends View {
     constructor(options) {
       super();
