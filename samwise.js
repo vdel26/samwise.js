@@ -345,10 +345,16 @@ var samwise = (function () {
     });
   };
 
+  var validateParams = function validateParams(params) {
+    if (!hasProp('section', params)) throw new Error('Missing parameter \'section\'');
+    if (!hasProp('elem', params)) throw new Error('Missing parameter \'elem\'');
+    if (!hasProp('url', params) && !hasProp('data', params)) throw new Error('Missing param: either \'url\' or \'data\' have to be present');
+    return true;
+  };
+
   var initApp = function initApp(triggerEl, params) {
     var mode = (function () {
-      if (hasProp('url', params)) return 'url';else if (hasProp('data', params) && hasProp('section', params)) return 'data';
-      throw new Error('Missing param: you have to supply either \'url\' or \'data\' and \'section\'');
+      if (hasProp('url', params)) return 'url';else if (hasProp('data', params)) return 'data';
     })();
 
     var data = (function () {
@@ -370,15 +376,16 @@ var samwise = (function () {
    * Public interface
    *
    * @param {Object} params
-   *   - el: selector of the element that triggers the widget
-   *   - url: endpoint to fetch the data
-   *   - data: required if thre is no 'url'
-   *   - section: only necessary if 'url' is present. Is
+   * @param {String}   params.section - section name (required)
+   * @param {HTMLElement} params.elem - element that triggers the widget (required)
+   * @param {String}       params.url - data endpoint (required if "data" not present)
+   * @param {Object}      params.data - JSON data (required if "url" not present)
    */
 
   return function (params) {
     console.log(params);
     var button = document.querySelector(params.elem);
+    validateParams(params);
     initApp(button, params);
   };
 })();
