@@ -306,17 +306,10 @@ const samwise = (() => {
       }
     };
 
-    const mode = (() => {
-      if (hasProp('url', params))
-        return 'url';
-      else if (hasProp('data', params))
-        return 'data';
-    })();
-
-    if (mode === 'data')
-      launch(mode)();
-    else if (mode === 'url')
-      fetchData(params.url, launch(mode));
+    if (hasProp('data', params))
+      launch('data')();
+    else if (hasProp('url', params))
+      fetchData(params.url, launch('url'));
   };
 
   /**
