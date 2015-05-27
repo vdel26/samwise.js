@@ -45,13 +45,21 @@
       ]
     };
 
-    // you can pass either a 'url' and 'section'
-    // or 'data'
+    // mode 1: fetch JSON data from the API
     samwise({
       elem: '#docs',
       data: data,
       section: 'dev_portal'
     });
+
+    // mode 2: JSON data as a parameter
+    /*
+    samwise({
+      elem: '#docs',
+      data: data,
+      section: 'dev_portal'
+    });
+    */
   });
 </script>
 

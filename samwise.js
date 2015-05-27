@@ -28,7 +28,7 @@ var samwise = (function () {
    * Helper functions
    */
 
-  var compose = function compose() {
+  var pipeline = function pipeline() {
     for (var _len = arguments.length, funcs = Array(_len), _key = 0; _key < _len; _key++) {
       funcs[_key] = arguments[_key];
     }
@@ -318,6 +318,18 @@ var samwise = (function () {
     })[0];
   };
 
+  var fetchData = function fetchData(url, cb) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function (e) {
+      cb(JSON.parse(xhr.responseText));
+    };
+    xhr.onerror = function (e) {
+      throw new Error(xhr.statusText);
+    };
+    xhr.open('GET', url, true);
+    xhr.send();
+  };
+
   var toggleVisibility = function toggleVisibility(elem) {
     elem.classList.toggle('is-visible');
   };
@@ -348,28 +360,49 @@ var samwise = (function () {
   var validateParams = function validateParams(params) {
     if (!hasProp('section', params)) throw new Error('Missing parameter \'section\'');
     if (!hasProp('elem', params)) throw new Error('Missing parameter \'elem\'');
-    if (!hasProp('url', params) && !hasProp('data', params)) throw new Error('Missing param: either \'url\' or \'data\' have to be present');
+    if (!hasProp('url', params) && !hasProp('data', params)) throw new Error('Missing parameter: either \'url\' or \'data\' have to be present');
     return true;
   };
 
-  var initApp = function initApp(triggerEl, params) {
+  var storeData = function storeData(data, sectionName) {
+    var section = getSection(data, sectionName);
+    store.set('data', section);
+    store.set('section', section.title);
+    store.set('footer', data.footer);
+  };
+
+  var mountApp = function mountApp(params) {
+    var button = document.querySelector(params.elem);
+    var app = new OuterView();
+    var root = document.body.appendChild(app.view);
+    bindEvents(button, root);
+  };
+
+  /**
+   * Get data and initialize widget
+   */
+
+  var initApp = function initApp(params) {
+    var launch = function launch(mode) {
+      if (mode === 'data') {
+        return function () {
+          storeData(params.data, params.section);
+          mountApp(params);
+        };
+      }
+      if (mode === 'url') {
+        return function (apiResponse) {
+          storeData(apiResponse, params.section);
+          mountApp(params);
+        };
+      }
+    };
+
     var mode = (function () {
       if (hasProp('url', params)) return 'url';else if (hasProp('data', params)) return 'data';
     })();
 
-    var data = (function () {
-      if (mode === 'data') return getSection(params.data, params.section);else console.log('No URL mode yet');
-    })();
-
-    store.set('data', data);
-    store.set('section', data.title);
-    store.set('footer', params.data.footer);
-
-    // insert the whole widget HTML tree to the DOM
-    var app = new OuterView();
-    var root = document.body.appendChild(app.view);
-
-    bindEvents(triggerEl, root);
+    if (mode === 'data') launch(mode)();else if (mode === 'url') fetchData(params.url, launch(mode));
   };
 
   /**
@@ -377,15 +410,14 @@ var samwise = (function () {
    *
    * @param {Object} params
    * @param {String}   params.section - section name (required)
-   * @param {HTMLElement} params.elem - element that triggers the widget (required)
-   * @param {String}       params.url - data endpoint (required if "data" not present)
-   * @param {Object}      params.data - JSON data (required if "url" not present)
+   * @param {String}   params.elem    - CSS selector of the element that opens the widget (required)
+   * @param {String}   params.url     - data endpoint (required if "data" not present)
+   * @param {Object}   params.data    - JSON data (required if "url" not present)
    */
 
   return function (params) {
     console.log(params);
-    var button = document.querySelector(params.elem);
     validateParams(params);
-    initApp(button, params);
+    initApp(params);
   };
 })();

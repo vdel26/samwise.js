@@ -18,7 +18,7 @@ const samwise = (() => {
    * Helper functions
    */
 
-  const compose = (...funcs) => value => funcs.reduce((a, b) => b(a), value);
+  const pipeline = (...funcs) => value => funcs.reduce((a, b) => b(a), value);
   const create = (tag, classes) => {
     let el = document.createElement(tag);
     if (classes) classes.forEach((cls) => el.classList.add(cls));
@@ -228,6 +228,18 @@ const samwise = (() => {
     return arr.sections.filter((sec) => sec.section === section)[0];
   };
 
+  const fetchData = (url, cb) => {
+    let xhr = new XMLHttpRequest();
+    xhr.onload = (e) => {
+      cb(JSON.parse(xhr.responseText));
+    };
+    xhr.onerror = (e) => {
+      throw new Error(xhr.statusText);
+    };
+    xhr.open('GET', url, true);
+    xhr.send();
+  };
+
   const toggleVisibility = (elem) => {
     elem.classList.toggle('is-visible');
   };
@@ -256,11 +268,44 @@ const samwise = (() => {
     if (!hasProp('elem', params))
       throw new Error("Missing parameter 'elem'");
     if (!hasProp('url', params) && !hasProp('data', params))
-      throw new Error("Missing param: either 'url' or 'data' have to be present");
+      throw new Error("Missing parameter: either 'url' or 'data' have to be present");
     return true;
   };
 
-  const initApp = (triggerEl, params) => {
+  const storeData = (data, sectionName) => {
+    const section = getSection(data, sectionName)
+    store.set('data', section);
+    store.set('section', section.title);
+    store.set('footer', data.footer);
+  };
+
+  const mountApp = (params) => {
+    const button = document.querySelector(params.elem);
+    const app = new OuterView();
+    const root = document.body.appendChild(app.view);
+    bindEvents(button, root);
+  };
+
+  /**
+   * Get data and initialize widget
+   */
+
+  const initApp = (params) => {
+    const launch = (mode) => {
+      if (mode === 'data') {
+        return (() => {
+          storeData(params.data, params.section);
+          mountApp(params);
+        });
+      }
+      if (mode === 'url') {
+        return ((apiResponse) => {
+          storeData(apiResponse, params.section);
+          mountApp(params);
+        });
+      }
+    };
+
     const mode = (() => {
       if (hasProp('url', params))
         return 'url';
@@ -268,21 +313,10 @@ const samwise = (() => {
         return 'data';
     })();
 
-    const data = (() => {
-      if (mode === 'data')
-        return getSection(params.data, params.section);
-      else console.log('No URL mode yet');
-    })();
-
-    store.set('data', data);
-    store.set('section', data.title);
-    store.set('footer', params.data.footer);
-
-    // insert the whole widget HTML tree to the DOM
-    let app = new OuterView();
-    const root = document.body.appendChild(app.view);
-
-    bindEvents(triggerEl, root);
+    if (mode === 'data')
+      launch(mode)();
+    else if (mode === 'url')
+      fetchData(params.url, launch(mode));
   };
 
   /**
@@ -290,16 +324,15 @@ const samwise = (() => {
    *
    * @param {Object} params
    * @param {String}   params.section - section name (required)
-   * @param {HTMLElement} params.elem - element that triggers the widget (required)
-   * @param {String}       params.url - data endpoint (required if "data" not present)
-   * @param {Object}      params.data - JSON data (required if "url" not present)
+   * @param {String}   params.elem    - CSS selector of the element that opens the widget (required)
+   * @param {String}   params.url     - data endpoint (required if "data" not present)
+   * @param {Object}   params.data    - JSON data (required if "url" not present)
    */
 
   return (params) => {
     console.log(params);
-    let button = document.querySelector(params.elem);
     validateParams(params);
-    initApp(button, params);
+    initApp(params);
   };
 
 })();
