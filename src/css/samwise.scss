@@ -5,8 +5,9 @@ $lighter-grey: #F8FAFB;
 $light-grey:   #DDD;
 $dark-grey:    #626C79;
 $darker-grey:  #323F4D;
+$darker-grey-light: #3E4D5D;
 
-$font: 'Helvetica', 'Arial', sans-serif;
+$font: 'Helvetica Neue', 'Arial', sans-serif;
 @import "icons";
 
 .sw-outerContainer {
@@ -35,6 +36,8 @@ $font: 'Helvetica', 'Arial', sans-serif;
   background: $lighter-grey;
   border-radius: 3px;
   font-family: $font;
+  box-shadow: 0px 0px 16px rgba($darker-grey, 0.8);
+  -webkit-font-smoothing: antialiased;
 }
 
 .sw-header {
@@ -61,7 +64,7 @@ $font: 'Helvetica', 'Arial', sans-serif;
   transform: scale(1);
 
   &:hover {
-    transform: scale(1.2);
+    transform: scale(1.25);
   }
 
   &.is-pressed {
@@ -95,16 +98,17 @@ $font: 'Helvetica', 'Arial', sans-serif;
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  font-weight: 300;
+  font-weight: 400;
   border: 3px solid $green;
   border-radius: 3px;
-  font-size: 14px;
+  font-size: 13px;
   color: $white;
   transition: .3s all cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
   &:hover {
     background-color: $green;
-    box-shadow: 0px 8px 16px $black;
+    //background-color: $darker-grey-light;
+    //box-shadow: 0px 8px 16px $black;
   }
 }
 

@@ -27,7 +27,9 @@
   margin: 50px auto 0;
   background: #F8FAFB;
   border-radius: 3px;
-  font-family: "Helvetica", "Arial", sans-serif; }
+  font-family: "Helvetica Neue", "Arial", sans-serif;
+  box-shadow: 0px 0px 16px rgba(50, 63, 77, 0.8);
+  -webkit-font-smoothing: antialiased; }
 
 .sw-header {
   margin-left: 50px;
@@ -42,7 +44,7 @@
   position: absolute;
   top: 20px;
   right: 20px;
-  background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTMiI\a   HZpZXdCb3g9IjAgMCAxMyAxMyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4\a   8cGF0aCBkPSJNMS41IDEuNWw5LjkgOS45bTAtOS45bC05LjkgOS45IiBzdHJva2UtbGluZWNhc\a   D0icm91bmQiIHN0cm9rZT0iIzM5RTFDRiIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIi8\a   +PC9zdmc+") no-repeat center;
+  background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMiIGhlaWdodD0iMTMi\a   IHZpZXdCb3g9IjAgMCAxMyAxMyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj\a   48dGl0bGU+Y2xvc2U8L3RpdGxlPjxnIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlPSIj\a   QkZCRkJGIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiIGZpbGwtcnVsZT0iZXZlbm9kZC\a   I+PHBhdGggZD0iTTEuNSAxLjVsOS45IDkuOU0xMS40IDEuNWwtOS45IDkuOSIvPjwvZz48L3N2\a   Zz4=") no-repeat center;
   width: 15px;
   height: 15px;
   cursor: pointer;
@@ -52,9 +54,9 @@
       -ms-transform: scale(1);
           transform: scale(1); }
   .sw-closeButton:hover {
-    -webkit-transform: scale(1.2);
-        -ms-transform: scale(1.2);
-            transform: scale(1.2); }
+    -webkit-transform: scale(1.25);
+        -ms-transform: scale(1.25);
+            transform: scale(1.25); }
   .sw-closeButton.is-pressed {
     -webkit-transform: scale(1);
         -ms-transform: scale(1);
@@ -84,16 +86,15 @@
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  font-weight: 300;
+  font-weight: 400;
   border: 3px solid #39E1CF;
   border-radius: 3px;
-  font-size: 14px;
+  font-size: 13px;
   color: #FFF;
   -webkit-transition: 0.3s all cubic-bezier(0.25, 0.46, 0.45, 0.94);
           transition: 0.3s all cubic-bezier(0.25, 0.46, 0.45, 0.94); }
   .sw-button:hover {
-    background-color: #39E1CF;
-    box-shadow: 0px 8px 16px #333; }
+    background-color: #39E1CF; }
 
 .sw-column {
   list-style: none;
