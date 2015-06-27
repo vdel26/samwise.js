@@ -19,14 +19,14 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     // mode 1: fetch JSON data from the API
-    samwise({
-      elem: '#docs',
-      url: 'https://samwise-mockapi.herokuapp.com/',
-      section: 'dev_portal'
-    });
+    // samwise({
+    //   elem: '#docs',
+    //   url: 'https://samwise-mockapi.herokuapp.com/',
+    //   section: 'dev_portal'
+    // });
 
     // mode 2: JSON data as a parameter
-    /*var data = {
+    var data = {
       sections: [
         {
           title: 'API gateway',
@@ -43,7 +43,10 @@
           articles: [
             { name: 'Change CSS',                   url: 'https://support.3scale.net/howtos/portal-configuration#change-css'},
             { name: 'CMS Guide',                    url: 'https://support.3scale.net/howtos/portal-configuration#cms-guide'},
-            { name: 'Liquid Formatting Tags',       url: 'https://support.3scale.net/howtos/portal-configuration#liquids'}
+            { name: 'Liquid Formatting Tags',       url: 'https://support.3scale.net/howtos/portal-configuration#liquids'},
+            { name: 'Customize Email Templates',    url: 'https://support.3scale.net/howtos/portal-configuration#customize-email'},
+            { name: 'Multi-Service Signup',         url: 'https://support.3scale.net/howtos/portal-configuration#multi-service'},
+            { name: 'Credit card workflow',         url: 'https://support.3scale.net/howtos/portal-configuration#cc-workflow'}
           ]
         }
       ],
@@ -58,7 +61,7 @@
       data: data,
       section: 'dev_portal'
     });
-    */
+
   });
 </script>
 

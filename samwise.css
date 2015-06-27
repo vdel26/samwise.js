@@ -99,11 +99,12 @@
   border-radius: 3px;
   font-size: 13px;
   color: #FFF;
+  box-sizing: content-box;
   -webkit-transition: 0.3s background-color cubic-bezier(0.25, 0.46, 0.45, 0.94);
           transition: 0.3s background-color cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  -webkit-transform: translateY(-15px);
-      -ms-transform: translateY(-15px);
-          transform: translateY(-15px);
+  -webkit-transform: translateY(-20px);
+      -ms-transform: translateY(-20px);
+          transform: translateY(-20px);
   opacity: 0; }
   .sw-button:hover {
     background-color: #39E1CF; }
@@ -169,13 +170,13 @@
       -ms-transform: translateY(0);
           transform: translateY(0);
   opacity: 1;
-  -webkit-transition: 0.3s -webkit-transform cubic-bezier(0.215, 0.61, 0.355, 1) 0.4s, 0.2s opacity ease 0.4s;
-          transition: 0.3s transform cubic-bezier(0.215, 0.61, 0.355, 1) 0.4s, 0.2s opacity ease 0.4s; }
+  -webkit-transition: 0.3s -webkit-transform cubic-bezier(0.215, 0.61, 0.355, 1) 0.4s, 0.3s opacity ease 0.4s;
+          transition: 0.3s transform cubic-bezier(0.215, 0.61, 0.355, 1) 0.4s, 0.3s opacity ease 0.4s; }
 
 .is-visible .sw-button:nth-child(2) {
   -webkit-transform: translateY(0);
       -ms-transform: translateY(0);
           transform: translateY(0);
   opacity: 1;
-  -webkit-transition: 0.3s -webkit-transform cubic-bezier(0.215, 0.61, 0.355, 1) 0.55s, 0.2s opacity ease 0.55s;
-          transition: 0.3s transform cubic-bezier(0.215, 0.61, 0.355, 1) 0.55s, 0.2s opacity ease 0.55s; }
+  -webkit-transition: 0.3s -webkit-transform cubic-bezier(0.215, 0.61, 0.355, 1) 0.55s, 0.3s opacity ease 0.55s;
+          transition: 0.3s transform cubic-bezier(0.215, 0.61, 0.355, 1) 0.55s, 0.3s opacity ease 0.55s; }
