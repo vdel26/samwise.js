@@ -61,10 +61,6 @@
     -webkit-transform: scale(1.25);
         -ms-transform: scale(1.25);
             transform: scale(1.25); }
-  .sw-closeButton.is-pressed {
-    -webkit-transform: scale(1);
-        -ms-transform: scale(1);
-            transform: scale(1); }
 
 .sw-main {
   margin: 50px 50px 0;

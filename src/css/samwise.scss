@@ -69,10 +69,6 @@ $font: 'Helvetica Neue', 'Arial', sans-serif;
   &:hover {
     transform: scale(1.25);
   }
-
-  &.is-pressed {
-    transform: scale(1);
-  }
 }
 
 .sw-main {

@@ -3,12 +3,6 @@ const samwise = (() => {
   'use strict';
 
   /**
-   * Defaults
-   */
-
-  const defaults = new Map();
-
-  /**
    * Datastore
    */
 
@@ -27,9 +21,7 @@ const samwise = (() => {
   const createFragment = () => document.createDocumentFragment();
   const hasProp = (prop, obj) => Object.prototype.hasOwnProperty.call(obj, prop);
   const createEvent = (() => {
-    if (typeof window.Event === 'function') {
-      return (type) => new Event(type);
-    }
+    if (typeof window.Event === 'function') { return (type) => new Event(type); }
     else {
       // IE8/9 support
       return (type) => {
@@ -38,6 +30,15 @@ const samwise = (() => {
       };
     }
   })();
+  const listen = (elem, event, handler) => {
+    elem.addEventListener(event, handler);
+    if (!elem.swListeners) elem.swListeners = new Map();
+    if (!elem.swListeners.has(event)) elem.swListeners.set(event, handler);
+  };
+  const unlisten = (elem, event, handler) => {
+    elem.removeEventListener(event, handler);
+    elem.swListeners.delete(event);
+  };
 
   /**
    * Base view class
@@ -54,6 +55,10 @@ const samwise = (() => {
 
     set view(elem) {
       this._view = elem;
+    }
+
+    remove() {
+      this._view = null;
     }
 
     addSubview(subview) {
@@ -87,10 +92,6 @@ const samwise = (() => {
     constructor(options) {
       super();
       this.render();
-    }
-
-    createHeader() {
-
     }
 
     createFooter() {
@@ -192,6 +193,7 @@ const samwise = (() => {
       this.name = options.name;
       this.render();
     }
+
     render() {
       let li = create('li', ['sw-listElem']);
       let a = create('a');
@@ -244,22 +246,25 @@ const samwise = (() => {
     elem.classList.toggle('is-visible');
   };
 
-  const bindEvents = (triggerEl, root) => {
-    let close = document.querySelector('.js-close');
+  const bindEvents = (triggerEl, rootEl, closeEl) => {
+    const toggleRootVisibility = () => toggleVisibility(rootEl);
+    const escapeKeyUpListener = (evt) => {
+      if (rootEl.classList.contains('is-visible') && evt.keyCode === 27)
+        toggleRootVisibility();
+    };
+    const outsideClickListener = (evt) => { if (evt.target === rootEl) toggleRootVisibility(); }
 
-    triggerEl.addEventListener('click', toggleVisibility.bind(null, root));
+    listen(triggerEl, 'click', toggleRootVisibility);
+    listen(closeEl, 'click', toggleRootVisibility);
+    listen(rootEl, 'click', outsideClickListener);
+    listen(document, 'keyup', escapeKeyUpListener);
+  };
 
-    close.addEventListener('click', (evt) => toggleVisibility(root));
-    close.addEventListener('mousedown', (evt) => close.classList.add('is-pressed'));
-    close.addEventListener('mouseup', (evt) => close.classList.remove('is-pressed'));
-
-    root.addEventListener('click', (evt) => {
-      if (evt.target === root) toggleVisibility(root);
-    });
-    document.addEventListener('keyup', (evt) => {
-      if (root.classList.contains('is-visible') && evt.keyCode === 27)
-        toggleVisibility(root);
-    });
+  const unbindEvents = (triggerEl, rootEl, closeEl) => {
+    unlisten(triggerEl, 'click', triggerEl.swListeners.get('click'));
+    unlisten(closeEl, 'click', closeEl.swListeners.get('click'));
+    unlisten(rootEl, 'click', rootEl.swListeners.get('click'));
+    unlisten(document, 'keyup', document.swListeners.get('keyup'));
   };
 
   const validateParams = (params) => {
@@ -280,10 +285,19 @@ const samwise = (() => {
   };
 
   const mountApp = (params) => {
-    const button = document.querySelector(params.elem);
-    const app = new OuterView();
-    const root = document.body.appendChild(app.view);
-    bindEvents(button, root);
+    let app = new OuterView();
+    let rootEl = document.body.appendChild(app.view);
+    let button = document.querySelector(params.elem);
+    let closeEl = document.querySelector('.js-close');
+    bindEvents(button, rootEl, closeEl);
+  };
+
+  const unmountApp = (params) => {
+    let rootEl = document.querySelector('.sw-outerContainer');
+    let button = document.querySelector(params.elem);
+    let closeEl = document.querySelector('.js-close');
+    rootEl.parentNode.removeChild(rootEl);
+    unbindEvents(button, rootEl, closeEl);
   };
 
   /**
@@ -323,9 +337,10 @@ const samwise = (() => {
    */
 
   return (params) => {
-    console.log(params);
+    if (samwise.mounted) unmountApp(params);
     validateParams(params);
     initApp(params);
+    samwise.mounted = true;
   };
 
 })();

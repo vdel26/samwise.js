@@ -13,12 +13,6 @@ var samwise = (function () {
   'use strict';
 
   /**
-   * Defaults
-   */
-
-  var defaults = new Map();
-
-  /**
    * Datastore
    */
 
@@ -65,6 +59,15 @@ var samwise = (function () {
       };
     }
   })();
+  var listen = function listen(elem, event, handler) {
+    elem.addEventListener(event, handler);
+    if (!elem.swListeners) elem.swListeners = new Map();
+    if (!elem.swListeners.has(event)) elem.swListeners.set(event, handler);
+  };
+  var unlisten = function unlisten(elem, event, handler) {
+    elem.removeEventListener(event, handler);
+    elem.swListeners['delete'](event);
+  };
 
   /**
    * Base view class
@@ -84,6 +87,11 @@ var samwise = (function () {
       },
       set: function (elem) {
         this._view = elem;
+      }
+    }, {
+      key: 'remove',
+      value: function remove() {
+        this._view = null;
       }
     }, {
       key: 'addSubview',
@@ -137,9 +145,6 @@ var samwise = (function () {
     _inherits(FrameView, _View2);
 
     _createClass(FrameView, [{
-      key: 'createHeader',
-      value: function createHeader() {}
-    }, {
       key: 'createFooter',
       value: function createFooter() {
         var links = store.get('footer');
@@ -334,27 +339,28 @@ var samwise = (function () {
     elem.classList.toggle('is-visible');
   };
 
-  var bindEvents = function bindEvents(triggerEl, root) {
-    var close = document.querySelector('.js-close');
+  var bindEvents = function bindEvents(triggerEl, rootEl, closeEl) {
+    var toggleRootVisibility = function toggleRootVisibility() {
+      return toggleVisibility(rootEl);
+    };
+    var escapeKeyUpListener = function escapeKeyUpListener(evt) {
+      if (rootEl.classList.contains('is-visible') && evt.keyCode === 27) toggleRootVisibility();
+    };
+    var outsideClickListener = function outsideClickListener(evt) {
+      if (evt.target === rootEl) toggleRootVisibility();
+    };
 
-    triggerEl.addEventListener('click', toggleVisibility.bind(null, root));
+    listen(triggerEl, 'click', toggleRootVisibility);
+    listen(closeEl, 'click', toggleRootVisibility);
+    listen(rootEl, 'click', outsideClickListener);
+    listen(document, 'keyup', escapeKeyUpListener);
+  };
 
-    close.addEventListener('click', function (evt) {
-      return toggleVisibility(root);
-    });
-    close.addEventListener('mousedown', function (evt) {
-      return close.classList.add('is-pressed');
-    });
-    close.addEventListener('mouseup', function (evt) {
-      return close.classList.remove('is-pressed');
-    });
-
-    root.addEventListener('click', function (evt) {
-      if (evt.target === root) toggleVisibility(root);
-    });
-    document.addEventListener('keyup', function (evt) {
-      if (root.classList.contains('is-visible') && evt.keyCode === 27) toggleVisibility(root);
-    });
+  var unbindEvents = function unbindEvents(triggerEl, rootEl, closeEl) {
+    unlisten(triggerEl, 'click', triggerEl.swListeners.get('click'));
+    unlisten(closeEl, 'click', closeEl.swListeners.get('click'));
+    unlisten(rootEl, 'click', rootEl.swListeners.get('click'));
+    unlisten(document, 'keyup', document.swListeners.get('keyup'));
   };
 
   var validateParams = function validateParams(params) {
@@ -372,10 +378,19 @@ var samwise = (function () {
   };
 
   var mountApp = function mountApp(params) {
-    var button = document.querySelector(params.elem);
     var app = new OuterView();
-    var root = document.body.appendChild(app.view);
-    bindEvents(button, root);
+    var rootEl = document.body.appendChild(app.view);
+    var button = document.querySelector(params.elem);
+    var closeEl = document.querySelector('.js-close');
+    bindEvents(button, rootEl, closeEl);
+  };
+
+  var unmountApp = function unmountApp(params) {
+    var rootEl = document.querySelector('.sw-outerContainer');
+    var button = document.querySelector(params.elem);
+    var closeEl = document.querySelector('.js-close');
+    rootEl.parentNode.removeChild(rootEl);
+    unbindEvents(button, rootEl, closeEl);
   };
 
   /**
@@ -412,8 +427,9 @@ var samwise = (function () {
    */
 
   return function (params) {
-    console.log(params);
+    if (samwise.mounted) unmountApp(params);
     validateParams(params);
     initApp(params);
+    samwise.mounted = true;
   };
 })();
