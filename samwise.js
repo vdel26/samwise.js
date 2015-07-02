@@ -19,9 +19,20 @@ var samwise = (function () {
   var store = new Map();
 
   /**
+   * Public methods
+   */
+
+  var exported = {};
+
+  /**
    * Helper functions
    */
 
+  var extend = function extend(target, source) {
+    return Object.keys(source).forEach(function (prop) {
+      return target[prop] = source[prop];
+    });
+  };
   var pipeline = function pipeline() {
     for (var _len = arguments.length, funcs = Array(_len), _key = 0; _key < _len; _key++) {
       funcs[_key] = arguments[_key];
@@ -354,6 +365,8 @@ var samwise = (function () {
     listen(closeEl, 'click', toggleRootVisibility);
     listen(rootEl, 'click', outsideClickListener);
     listen(document, 'keyup', escapeKeyUpListener);
+
+    exported.toggle = toggleRootVisibility;
   };
 
   var unbindEvents = function unbindEvents(triggerEl, rootEl, closeEl) {
@@ -431,5 +444,6 @@ var samwise = (function () {
     validateParams(params);
     initApp(params);
     samwise.mounted = true;
+    extend(samwise, exported);
   };
 })();

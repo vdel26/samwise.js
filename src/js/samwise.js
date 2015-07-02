@@ -9,9 +9,16 @@ const samwise = (() => {
   const store = new Map();
 
   /**
+   * Public methods
+   */
+
+  const exported = {};
+
+  /**
    * Helper functions
    */
 
+  const extend = (target, source) => Object.keys(source).forEach(prop => target[prop] = source[prop])
   const pipeline = (...funcs) => value => funcs.reduce((a, b) => b(a), value);
   const create = (tag, classes) => {
     let el = document.createElement(tag);
@@ -258,6 +265,8 @@ const samwise = (() => {
     listen(closeEl, 'click', toggleRootVisibility);
     listen(rootEl, 'click', outsideClickListener);
     listen(document, 'keyup', escapeKeyUpListener);
+
+    exported.toggle = toggleRootVisibility;
   };
 
   const unbindEvents = (triggerEl, rootEl, closeEl) => {
@@ -341,6 +350,7 @@ const samwise = (() => {
     validateParams(params);
     initApp(params);
     samwise.mounted = true;
+    extend(samwise, exported);
   };
 
 })();
