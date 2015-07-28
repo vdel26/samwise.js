@@ -18,7 +18,7 @@ const samwise = (() => {
    * Helper functions
    */
 
-  const extend = (target, source) => Object.keys(source).forEach(prop => target[prop] = source[prop])
+  const extend = (target, source) => Object.keys(source).forEach(prop => target[prop] = source[prop]);
   const pipeline = (...funcs) => value => funcs.reduce((a, b) => b(a), value);
   const create = (tag, classes) => {
     let el = document.createElement(tag);
@@ -259,7 +259,7 @@ const samwise = (() => {
       if (rootEl.classList.contains('is-visible') && evt.keyCode === 27)
         toggleRootVisibility();
     };
-    const outsideClickListener = (evt) => { if (evt.target === rootEl) toggleRootVisibility(); }
+    const outsideClickListener = (evt) => { if (evt.target === rootEl) toggleRootVisibility(); };
 
     listen(triggerEl, 'click', toggleRootVisibility);
     listen(closeEl, 'click', toggleRootVisibility);
@@ -287,7 +287,7 @@ const samwise = (() => {
   };
 
   const storeData = (data, sectionName) => {
-    const section = getSection(data, sectionName)
+    const section = getSection(data, sectionName);
     store.set('data', section);
     store.set('section', section.title);
     store.set('footer', data.footer);
@@ -316,16 +316,16 @@ const samwise = (() => {
   const initApp = (params) => {
     const launch = (mode) => {
       if (mode === 'data') {
-        return (() => {
+        return () => {
           storeData(params.data, params.section);
           mountApp(params);
-        });
+        };
       }
       if (mode === 'url') {
-        return ((apiResponse) => {
+        return (apiResponse) => {
           storeData(apiResponse, params.section);
           mountApp(params);
-        });
+        };
       }
     };
 
