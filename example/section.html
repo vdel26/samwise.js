@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Demo app</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link href="//fonts.googleapis.com/css?family=Roboto:400" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="../samwise.css">
+  <link rel="stylesheet" type="text/css" href="/example/example.css">
+</head>
+<body>
+
+<header>
+  <h1 class="page-title">Acmebnb</h1>
+  <nav>
+    <a href="/example/index.html">Hosting</a>
+    <a href="/example/section.html">Traveling</a>
+  </nav>
+</header>
+
+<h2 class="section-title">Section: Traveling</h2>
+
+<p>This section explains how to discover and rent unique places around the world with Acmebnb.</p>
+<p>Bacon ipsum dolor amet capicola pastrami short ribs picanha salami chuck. Minim cow sed mollit dolore nulla. Nisi cupidatat tongue consequat et. Short ribs tenderloin swine jerky chuck filet mignon. Frankfurter rump aliquip sausage salami tongue andouille officia veniam labore ipsum jerky in esse. Tempor cow ut, bresaola alcatra excepteur mollit turducken magna ipsum beef ribs incididunt nisi ad leberkas.</p>
+<p class="tip">Click on "HELP" to see Samwise in action.</p>
+<button id="docs">HELP</button>
+
+<script src="../samwise.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // invoke with the corresponding section name
+    samwise({
+      elem: '#docs',
+      url: 'https://samwise-mockapi.herokuapp.com/',
+      section: 'traveling'
+    });
+  });
+</script>
+
+</body>
+</html>
