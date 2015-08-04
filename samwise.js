@@ -1,16 +1,71 @@
-'use strict';
+"use strict";
 
-var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+(function (e) {
+  function f(a, c) {
+    function b(a) {
+      if (!this || this.constructor !== b) return new b(a);this._keys = [];this._values = [];this._itp = [];this.objectOnly = c;a && v.call(this, a);
+    }c || w(a, "size", { get: x });a.constructor = b;b.prototype = a;return b;
+  }function v(a) {
+    this.add ? a.forEach(this.add, this) : a.forEach(function (a) {
+      this.set(a[0], a[1]);
+    }, this);
+  }function d(a) {
+    this.has(a) && (this._keys.splice(b, 1), this._values.splice(b, 1), this._itp.forEach(function (a) {
+      b < a[0] && a[0]--;
+    }));return -1 < b;
+  }function m(a) {
+    return this.has(a) ? this._values[b] : void 0;
+  }function n(a, c) {
+    if (this.objectOnly && c !== Object(c)) throw new TypeError("Invalid value used as weak collection key");if (c != c || 0 === c) for (b = a.length; b-- && !y(a[b], c););else b = a.indexOf(c);return -1 < b;
+  }function p(a) {
+    return n.call(this, this._values, a);
+  }function q(a) {
+    return n.call(this, this._keys, a);
+  }function r(a, c) {
+    this.has(a) ? this._values[b] = c : this._values[this._keys.push(a) - 1] = c;return this;
+  }function t(a) {
+    this.has(a) || this._values.push(a);return this;
+  }function h() {
+    this._values.length = 0;
+  }function z() {
+    return k(this._itp, this._keys);
+  }function l() {
+    return k(this._itp, this._values);
+  }function A() {
+    return k(this._itp, this._keys, this._values);
+  }function B() {
+    return k(this._itp, this._values, this._values);
+  }function k(a, c, b) {
+    var g = [0],
+        e = !1;a.push(g);return { next: function next() {
+        var f,
+            d = g[0];!e && d < c.length ? (f = b ? [c[d], b[d]] : c[d], g[0]++) : (e = !0, a.splice(a.indexOf(g), 1));return { done: e, value: f };
+      } };
+  }function x() {
+    return this._values.length;
+  }function u(a, c) {
+    for (var b = this.entries();;) {
+      var d = b.next();if (d.done) break;a.call(c, d.value[1], d.value[0], this);
+    }
+  }var b,
+      w = Object.defineProperty,
+      y = function y(a, b) {
+    return isNaN(a) ? isNaN(b) : a === b;
+  };"undefined" == typeof WeakMap && (e.WeakMap = f({ "delete": d, clear: h, get: m, has: q, set: r }, !0));"undefined" != typeof Map && new Map().values().next || (e.Map = f({ "delete": d, has: q, get: m, set: r, keys: z, values: l, entries: A, forEach: u, clear: h }));"undefined" != typeof Set && new Set().values().next || (e.Set = f({ has: p, add: t, "delete": d, clear: h, keys: l, values: l, entries: B, forEach: u }));"undefined" == typeof WeakSet && (e.WeakSet = f({ "delete": d, add: t, clear: h,
+    has: p }, !0));
+})("undefined" != typeof exports && "undefined" != typeof global ? global : window);
 
 var samwise = (function () {
 
-  'use strict';
+  "use strict";
 
   /**
    * Datastore
@@ -58,14 +113,14 @@ var samwise = (function () {
     return Object.prototype.hasOwnProperty.call(obj, prop);
   };
   var createEvent = (function () {
-    if (typeof window.Event === 'function') {
+    if (typeof window.Event === "function") {
       return function (type) {
         return new Event(type);
       };
     } else {
       // IE8/9 support
       return function (type) {
-        var ev = document.createEvent('Event');
+        var ev = document.createEvent("Event");
         ev.initEvent(type, true, true);
       };
     }
@@ -77,7 +132,7 @@ var samwise = (function () {
   };
   var unlisten = function unlisten(elem, event, handler) {
     elem.removeEventListener(event, handler);
-    elem.swListeners['delete'](event);
+    elem.swListeners["delete"](event);
   };
 
   /**
@@ -92,7 +147,7 @@ var samwise = (function () {
     }
 
     _createClass(View, [{
-      key: 'view',
+      key: "view",
       get: function () {
         return this._view;
       },
@@ -100,12 +155,12 @@ var samwise = (function () {
         this._view = elem;
       }
     }, {
-      key: 'remove',
+      key: "remove",
       value: function remove() {
         this._view = null;
       }
     }, {
-      key: 'addSubview',
+      key: "addSubview",
       value: function addSubview(subview) {
         this._view.appendChild(subview);
       }
@@ -122,16 +177,16 @@ var samwise = (function () {
     function OuterView(options) {
       _classCallCheck(this, OuterView);
 
-      _get(Object.getPrototypeOf(OuterView.prototype), 'constructor', this).call(this);
+      _get(Object.getPrototypeOf(OuterView.prototype), "constructor", this).call(this);
       this.render();
     }
 
     _inherits(OuterView, _View);
 
     _createClass(OuterView, [{
-      key: 'render',
+      key: "render",
       value: function render() {
-        var outerContainer = create('div', ['sw-outerContainer']);
+        var outerContainer = create("div", ["sw-outerContainer"]);
         var frame = new FrameView();
         outerContainer.appendChild(frame.view);
         this.view = outerContainer;
@@ -149,16 +204,16 @@ var samwise = (function () {
     function FrameView(options) {
       _classCallCheck(this, FrameView);
 
-      _get(Object.getPrototypeOf(FrameView.prototype), 'constructor', this).call(this);
+      _get(Object.getPrototypeOf(FrameView.prototype), "constructor", this).call(this);
       this.render();
     }
 
     _inherits(FrameView, _View2);
 
     _createClass(FrameView, [{
-      key: 'createFooter',
+      key: "createFooter",
       value: function createFooter() {
-        var links = store.get('footer');
+        var links = store.get("footer");
         var buttons = links.map(function (item) {
           return new ButtonView({ url: item.url, name: item.name });
         }).map(function (item) {
@@ -171,19 +226,19 @@ var samwise = (function () {
         return frag;
       }
     }, {
-      key: 'render',
+      key: "render",
       value: function render() {
-        var frame = create('div', ['sw']);
+        var frame = create("div", ["sw"]);
 
-        var header = create('header', ['sw-header']);
-        var h1 = create('h1');
-        var div = create('div', ['sw-closeButton', 'js-close']);
-        h1.textContent = store.get('section');
+        var header = create("header", ["sw-header"]);
+        var h1 = create("h1");
+        var div = create("div", ["sw-closeButton", "js-close"]);
+        h1.textContent = store.get("section");
         header.appendChild(div);
         header.appendChild(h1);
 
         var content = new ContentView();
-        var footer = create('footer', ['sw-footer']);
+        var footer = create("footer", ["sw-footer"]);
         footer.appendChild(this.createFooter());
 
         frame.appendChild(header);
@@ -205,16 +260,16 @@ var samwise = (function () {
     function ContentView(options) {
       _classCallCheck(this, ContentView);
 
-      _get(Object.getPrototypeOf(ContentView.prototype), 'constructor', this).call(this);
+      _get(Object.getPrototypeOf(ContentView.prototype), "constructor", this).call(this);
       this.render();
     }
 
     _inherits(ContentView, _View3);
 
     _createClass(ContentView, [{
-      key: 'createListElems',
+      key: "createListElems",
       value: function createListElems(leftCol, rightCol) {
-        var data = store.get('data');
+        var data = store.get("data");
         var items = data.articles.map(function (item) {
           return new ListElemView({ url: item.url, name: item.name });
         }).map(function (item) {
@@ -227,13 +282,13 @@ var samwise = (function () {
         leftCol.appendChild(frag);
       }
     }, {
-      key: 'render',
+      key: "render",
       value: function render() {
-        var main = create('div', ['sw-main']);
+        var main = create("div", ["sw-main"]);
 
-        var mainContent = create('div', ['sw-content']);
-        var leftCol = create('ul', ['sw-column', 'sw-column--left']);
-        var rightCol = create('ul', ['sw-column', 'sw-column--left']);
+        var mainContent = create("div", ["sw-content"]);
+        var leftCol = create("ul", ["sw-column", "sw-column--left"]);
+        var rightCol = create("ul", ["sw-column", "sw-column--left"]);
 
         this.createListElems(leftCol, rightCol);
 
@@ -256,7 +311,7 @@ var samwise = (function () {
     function ButtonView(options) {
       _classCallCheck(this, ButtonView);
 
-      _get(Object.getPrototypeOf(ButtonView.prototype), 'constructor', this).call(this);
+      _get(Object.getPrototypeOf(ButtonView.prototype), "constructor", this).call(this);
       this.url = options.url;
       this.name = options.name;
       this.render();
@@ -265,9 +320,9 @@ var samwise = (function () {
     _inherits(ButtonView, _View4);
 
     _createClass(ButtonView, [{
-      key: 'render',
+      key: "render",
       value: function render() {
-        var a = create('a', ['sw-button']);
+        var a = create("a", ["sw-button"]);
         a.href = this.url;
         a.textContent = this.name;
         this.view = a;
@@ -285,7 +340,7 @@ var samwise = (function () {
     function ListElemView(options) {
       _classCallCheck(this, ListElemView);
 
-      _get(Object.getPrototypeOf(ListElemView.prototype), 'constructor', this).call(this);
+      _get(Object.getPrototypeOf(ListElemView.prototype), "constructor", this).call(this);
       this.url = options.url;
       this.name = options.name;
       this.render();
@@ -294,10 +349,10 @@ var samwise = (function () {
     _inherits(ListElemView, _View5);
 
     _createClass(ListElemView, [{
-      key: 'render',
+      key: "render",
       value: function render() {
-        var li = create('li', ['sw-listElem']);
-        var a = create('a');
+        var li = create("li", ["sw-listElem"]);
+        var a = create("a");
         a.href = this.url;
         a.textContent = this.name;
         li.appendChild(a);
@@ -342,12 +397,12 @@ var samwise = (function () {
     xhr.onerror = function (e) {
       throw new Error(xhr.statusText);
     };
-    xhr.open('GET', url, true);
+    xhr.open("GET", url, true);
     xhr.send();
   };
 
   var toggleVisibility = function toggleVisibility(elem) {
-    elem.classList.toggle('is-visible');
+    elem.classList.toggle("is-visible");
   };
 
   var bindEvents = function bindEvents(triggerEl, rootEl, closeEl) {
@@ -355,53 +410,53 @@ var samwise = (function () {
       return toggleVisibility(rootEl);
     };
     var escapeKeyUpListener = function escapeKeyUpListener(evt) {
-      if (rootEl.classList.contains('is-visible') && evt.keyCode === 27) toggleRootVisibility();
+      if (rootEl.classList.contains("is-visible") && evt.keyCode === 27) toggleRootVisibility();
     };
     var outsideClickListener = function outsideClickListener(evt) {
       if (evt.target === rootEl) toggleRootVisibility();
     };
 
-    listen(triggerEl, 'click', toggleRootVisibility);
-    listen(closeEl, 'click', toggleRootVisibility);
-    listen(rootEl, 'click', outsideClickListener);
-    listen(document, 'keyup', escapeKeyUpListener);
+    listen(triggerEl, "click", toggleRootVisibility);
+    listen(closeEl, "click", toggleRootVisibility);
+    listen(rootEl, "click", outsideClickListener);
+    listen(document, "keyup", escapeKeyUpListener);
 
     exported.toggle = toggleRootVisibility;
   };
 
   var unbindEvents = function unbindEvents(triggerEl, rootEl, closeEl) {
-    unlisten(triggerEl, 'click', triggerEl.swListeners.get('click'));
-    unlisten(closeEl, 'click', closeEl.swListeners.get('click'));
-    unlisten(rootEl, 'click', rootEl.swListeners.get('click'));
-    unlisten(document, 'keyup', document.swListeners.get('keyup'));
+    unlisten(triggerEl, "click", triggerEl.swListeners.get("click"));
+    unlisten(closeEl, "click", closeEl.swListeners.get("click"));
+    unlisten(rootEl, "click", rootEl.swListeners.get("click"));
+    unlisten(document, "keyup", document.swListeners.get("keyup"));
   };
 
   var validateParams = function validateParams(params) {
-    if (!hasProp('section', params)) throw new Error('Missing parameter \'section\'');
-    if (!hasProp('elem', params)) throw new Error('Missing parameter \'elem\'');
-    if (!hasProp('url', params) && !hasProp('data', params)) throw new Error('Missing parameter: either \'url\' or \'data\' have to be present');
+    if (!hasProp("section", params)) throw new Error("Missing parameter 'section'");
+    if (!hasProp("elem", params)) throw new Error("Missing parameter 'elem'");
+    if (!hasProp("url", params) && !hasProp("data", params)) throw new Error("Missing parameter: either 'url' or 'data' have to be present");
     return true;
   };
 
   var storeData = function storeData(data, sectionName) {
     var section = getSection(data, sectionName);
-    store.set('data', section);
-    store.set('section', section.title);
-    store.set('footer', data.footer);
+    store.set("data", section);
+    store.set("section", section.title);
+    store.set("footer", data.footer);
   };
 
   var mountApp = function mountApp(params) {
     var app = new OuterView();
     var rootEl = document.body.appendChild(app.view);
     var button = document.querySelector(params.elem);
-    var closeEl = document.querySelector('.js-close');
+    var closeEl = document.querySelector(".js-close");
     bindEvents(button, rootEl, closeEl);
   };
 
   var unmountApp = function unmountApp(params) {
-    var rootEl = document.querySelector('.sw-outerContainer');
+    var rootEl = document.querySelector(".sw-outerContainer");
     var button = document.querySelector(params.elem);
-    var closeEl = document.querySelector('.js-close');
+    var closeEl = document.querySelector(".js-close");
     rootEl.parentNode.removeChild(rootEl);
     unbindEvents(button, rootEl, closeEl);
   };
@@ -412,13 +467,13 @@ var samwise = (function () {
 
   var initApp = function initApp(params) {
     var launch = function launch(mode) {
-      if (mode === 'data') {
+      if (mode === "data") {
         return function () {
           storeData(params.data, params.section);
           mountApp(params);
         };
       }
-      if (mode === 'url') {
+      if (mode === "url") {
         return function (apiResponse) {
           storeData(apiResponse, params.section);
           mountApp(params);
@@ -426,7 +481,7 @@ var samwise = (function () {
       }
     };
 
-    if (hasProp('data', params)) launch('data')();else if (hasProp('url', params)) fetchData(params.url, launch('url'));
+    if (hasProp("data", params)) launch("data")();else if (hasProp("url", params)) fetchData(params.url, launch("url"));
   };
 
   /**
