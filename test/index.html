@@ -25,8 +25,11 @@
   <script>mocha.setup('bdd')</script>
   <script src="test.urlmode.js"></script>
   <script>
-    mocha.checkLeaks();
-    mocha.run();
+    if (window.mochaPhantomJS) {
+      mochaPhantomJS.run();
+    } else {
+      mocha.run();
+    }
   </script>
 </body>
 </html>

@@ -30,6 +30,7 @@ describe('Samwise Tests', function () {
     it('should open the widget when clicking the trigger', function () {
       var button = document.querySelector('#trigger');
       var outerContainer = document.querySelector('.sw-outerContainer');
+      expect(outerContainer.classList.contains('is-visible')).to.be(false);
       button.click();
       expect(outerContainer.classList.contains('is-visible')).to.be(true);
     });
