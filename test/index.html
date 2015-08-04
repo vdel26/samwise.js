@@ -7,7 +7,7 @@
   <link href="../samwise.css" rel="stylesheet" />
 </head>
 <body>
-  <div id="trigger"></div>
+  <input id="trigger" type="button"></input>
   <div id="mocha"></div>
 
   <script src="../node_modules/expect.js/index.js"></script>
@@ -23,7 +23,7 @@
   </script>
 
   <script>mocha.setup('bdd')</script>
-  <script src="test.urlmode.js"></script>
+  <script src="tests.js"></script>
   <script>
     if (window.mochaPhantomJS) {
       mochaPhantomJS.run();
