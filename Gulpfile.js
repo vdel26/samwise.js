@@ -8,6 +8,8 @@ var eslint = require('gulp-eslint');
 var mochaPhantomJS = require('gulp-mocha-phantomjs');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
+var minifyCss = require('gulp-minify-css');
+var rename = require('gulp-rename');
 
 gulp.task('js', function() {
   var shim = 'node_modules/es6-collections/es6-collections.js';
@@ -23,6 +25,20 @@ gulp.task('scss', function () {
     .pipe(autoprefixer())
     .pipe(gulp.dest('.'))
     .pipe(reload({ stream: true }));
+});
+
+gulp.task('js-dist', ['js'] ,function () {
+  return gulp.src('samwise.js')
+    .pipe(uglify())
+    .pipe(rename({ extname: '.min.js' }))
+    .pipe(gulp.dest('.'));
+});
+
+gulp.task('css-dist', ['scss'] ,function () {
+  return gulp.src('samwise.css')
+    .pipe(minifyCss())
+    .pipe(rename({ extname: '.min.css' }))
+    .pipe(gulp.dest('.'));
 });
 
 gulp.task('lint', function () {
@@ -47,3 +63,5 @@ gulp.task('serve', ['scss', 'js'], function() {
   gulp.watch('src/css/**/*.scss', ['scss']);
   gulp.watch('src/js/**/*.js', ['js']);
 });
+
+gulp.task('dist', ['js-dist', 'css-dist']);
