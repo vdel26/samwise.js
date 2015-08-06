@@ -24,16 +24,16 @@ There is a [full example](https://github.com/vdel26/samwise.js/tree/master/examp
 {
   "sections": [
     {
-      "title": "Hosting",
-      "section": "hosting",
+      "title": "Basic Setup",
+      "section": "basicSetup",
       "articles": [
-        { "name": "What are host management services?", "url": "https://www.airbnb.com/help/article/970?topic=197"},
+        { "name": "Getting started", "url": "https://www.mycompany.com/help/article/970"},
       ]
     }
   ],
   "footer": [
-    { "name": "Help center",  "url": "https://www.airbnb.com/help" },
-    { "name": "Contact",      "url": "https://www.airbnb.com/help/contact_us" }
+    { "name": "Help center",  "url": "https://www.mycompany.com/help" },
+    { "name": "Contact",      "url": "https://www.mycompany.com/help/contact_us" }
   ]
 }
 ```
@@ -52,7 +52,7 @@ There is a [full example](https://github.com/vdel26/samwise.js/tree/master/examp
 samwise({
   elem: '',
   url: 'http://json-description-endpoint.com',
-  section: 'sectionid'
+  section: 'sectionId'
 });
 ```
 
@@ -66,7 +66,7 @@ Passing the JSON data directly as a parameter is also supported:
 samwise({
   elem: '',
   data: '{ sections: [ ... ], footer: [ ... ]}',
-  section: 'sectionid'
+  section: 'sectionId'
 });
 ```
 
