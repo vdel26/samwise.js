@@ -48,10 +48,11 @@ $font: 'Helvetica Neue', 'Arial', sans-serif;
   padding-top: 60px;
 
   h1 {
-    color: $darker-grey;
     font-size: 18px;
+    font-family: $font;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    color: $darker-grey;
   }
 }
 
@@ -99,6 +100,7 @@ $font: 'Helvetica Neue', 'Arial', sans-serif;
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-family: $font;
   font-weight: 400;
   border: 3px solid $green;
   border-radius: 3px;
@@ -155,6 +157,7 @@ $font: 'Helvetica Neue', 'Arial', sans-serif;
 
   a {
     display: inline-block;
+    font-family: $font;
     font-weight: 300;
     font-size: 18px;
     color: $black;

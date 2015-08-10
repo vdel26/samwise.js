@@ -39,10 +39,11 @@
   margin-left: 50px;
   padding-top: 60px; }
   .sw-header h1 {
-    color: #323F4D;
     font-size: 18px;
+    font-family: "Helvetica Neue", "Arial", sans-serif;
     text-transform: uppercase;
-    letter-spacing: 0.5px; }
+    letter-spacing: 0.5px;
+    color: #323F4D; }
 
 .sw-closeButton {
   position: absolute;
@@ -90,6 +91,7 @@
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-family: "Helvetica Neue", "Arial", sans-serif;
   font-weight: 400;
   border: 3px solid #39E1CF;
   border-radius: 3px;
@@ -139,6 +141,7 @@
             transform: translateX(10px); }
   .sw-listElem a {
     display: inline-block;
+    font-family: "Helvetica Neue", "Arial", sans-serif;
     font-weight: 300;
     font-size: 18px;
     color: #333;
